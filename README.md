@@ -1,21 +1,21 @@
 # Ensemble
 
-**多 Agent 协作的设计模式与 Workflow 脚手架**
+**多 Agent 协作的设计模式与跨平台脚手架**
 
 ---
 
 ## 来由
 
-当你第一次用 Claude Code 跑多个 Agent 并行搜索、交叉验证、流水线处理同一批文件时，你会发现：
+当你第一次设计多 Agent 并行搜索、交叉验证、流水线处理同一批文件时，你会发现：
 
 - "并行之后怎么汇总？"
 - "怎么保证 A Agent 的输出能正确传给 B Agent？"
 - "5 个 Lens 评审同一结论，阈值多少才算过？"
-- "如果 Bug 还没找完，怎么让 Agent 继续找但不无限循环？"
+- "如果还没找完，怎么让 Agent 继续但不死循环？"
 
 这些问题没有标准答案。每做一次新项目，就从零推导一次。
 
-**Ensemble** 来自真实项目的踩坑积累，把"多 Agent 协作"的常见模式整理成可直接复用的 Workflow 模板和设计规范。
+**Ensemble** 来自真实项目的踩坑积累，把"多 Agent 协作"的常见模式整理成可直接复用的 Workflow 模板和设计规范，适用于 Claude Code、Cursor、WindSurf、Coze 等任意 AI 编程平台。
 
 ---
 
@@ -86,11 +86,14 @@ const bugs = JSON.parse(raw)  // 随时可能失败
 | `migration.js` | pipeline | 批量迁移、API 升级、框架迁移 |
 
 ```javascript
-// 使用方式：在 Claude Code Workflow 中引用
+// 使用方式：在你的 AI 平台 Workflow 中引用
 Workflow({
   scriptPath: '/path/to/ensemble/workflow-templates/research.js',
   args: { query: '你的调研主题', dimensions: 3 }
 })
+
+// 或直接在项目中使用模式定义
+import { pipeline, judgePanel } from '@ensemble/core'
 ```
 
 ### 3. 自定义参数
@@ -132,8 +135,8 @@ const results = await pipeline(items,
 
 ```
 ensemble/
-├── CLAUDE.md                    # 代理执行契约（必读）
 ├── README.md                    # 本文件
+├── CLAUDE.md                    # 项目规范（Agent 必读）
 ├── patterns/                    # 核心协作模式
 │   ├── README.md                # 模式总览 + 决策树
 │   ├── fan-out.md               # 并行发散
